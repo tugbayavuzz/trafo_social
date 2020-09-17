@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
 import 'package:path/path.dart';
 import 'package:travel_blog/core/base/model/user_model.dart';
 import 'package:travel_blog/core/base/service/database_service.dart';
@@ -37,14 +38,12 @@ class _BodyUIState extends State<BodyUI> {
   final sharedDate = DateTime.now().toString();
   String postImgUrl = '';
 
-  Future<String> resmiGonder() async {
-    StorageReference resimYeri =
-        FirebaseStorage.instance.ref().child(resimYolu);
+  Future<String> uploadImg() async {
+    StorageReference imgPlace = FirebaseStorage.instance.ref().child(_imgPath);
 
-    StorageUploadTask yuklemeGorevi = resimYeri.putFile(resim);
+    StorageUploadTask uploadTask = imgPlace.putFile(_img);
 
-    var indirmeUrl =
-        await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
+    var indirmeUrl = await (await uploadTask.onComplete).ref.getDownloadURL();
 
     postImgUrl = indirmeUrl.toString();
 
@@ -53,15 +52,15 @@ class _BodyUIState extends State<BodyUI> {
     return postImgUrl;
   }
 
-  File resim;
-  String resimYolu;
+  File _img;
+  String _imgPath;
 
-  Future resimAl() async {
-    var secilenResim = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future pickImg() async {
+    File pickedImg = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
-      resim = secilenResim;
-      resimYolu = basename(resim.path);
+      _img = pickedImg;
+      _imgPath = basename(pickedImg.path);
     });
   }
 
@@ -98,14 +97,14 @@ class _BodyUIState extends State<BodyUI> {
       height: 200,
       width: 330,
       child: Image.file(
-        resim,
+        _img,
       ),
     );
   }
 
   InkWell b4() {
     return InkWell(
-      onTap: resimAl,
+      onTap: pickImg,
       child: Container(
         margin:
             EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0, bottom: 20.0),
@@ -115,7 +114,7 @@ class _BodyUIState extends State<BodyUI> {
         child: DottedBorder(
             color: Colors.blueAccent,
             strokeWidth: 1,
-            child: resim == null ? b41() : yuklemeAlani()),
+            child: _img == null ? b41() : uploadImg()),
       ),
     );
   }
