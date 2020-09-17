@@ -15,14 +15,7 @@ import 'package:travel_blog/ui/post_page/postpage.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 class HomeView extends HomeViewModel {
-  static const storyListLength = 1000; // Dummy
-  final AuthService _auth = AuthService();
   int _index = 0;
-  FutureBuilder futureBuilder;
-  Future future;
-  String get userPicUrl =>
-      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; //shared pref profil img
-
   @override
   Widget build(BuildContext context) {
     switch (_index) {
@@ -54,7 +47,7 @@ class HomeView extends HomeViewModel {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PostPage()));
+                context, MaterialPageRoute(builder: (context) => PostList()));
           },
           child: Icon(Icons.add),
         ),
@@ -78,13 +71,9 @@ class HomeView extends HomeViewModel {
 
   FlatButton buildFlatButtonLogOut() {
     return FlatButton.icon(
-      onPressed: () async {
-        await _auth.signOut();
-      },
+      onPressed: () => signOut(),
       icon: Icon(Icons.exit_to_app),
-      label: Text(
-        'Log out',
-      ),
+      label: Text('Log out'),
     );
   }
 

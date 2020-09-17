@@ -44,7 +44,6 @@ class _BodyUIState extends State<BodyUI> {
     return url;
   }
 
-  /////////////////////////////////
   File resim;
   String resimYolu;
 
@@ -180,7 +179,7 @@ class _BodyUIState extends State<BodyUI> {
                 filled: true,
                 hintStyle: new TextStyle(color: Colors.grey[800]),
                 hintText:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
                 fillColor: Colors.white70),
           ),
         ),
