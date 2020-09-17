@@ -1,13 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:travel_blog/core/base/service/database_service.dart';
-import 'package:travel_blog/ui/auth/service/auth_service.dart';
-import 'package:travel_blog/ui/detail/view/detail.dart';
-import 'package:travel_blog/ui/home/view/post_list.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:travel_blog/core/base/model/error_model.dart';
 import 'package:travel_blog/core/constants/constants.dart';
+import 'package:travel_blog/ui/auth/service/auth_service.dart';
+import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
@@ -15,7 +11,14 @@ import 'package:travel_blog/ui/post_page/postpage.dart';
 import 'package:travel_blog/ui/profile_page/view/profile.dart';
 
 class HomeView extends HomeViewModel {
+  static const storyListLength = 1000; // Dummy
+  final AuthService _auth = AuthService();
   int _index = 0;
+  FutureBuilder futureBuilder;
+  Future future;
+  String get userPicUrl =>
+      "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; //shared pref profil img
+
   @override
   Widget build(BuildContext context) {
     switch (_index) {
@@ -26,31 +29,27 @@ class HomeView extends HomeViewModel {
         future = homeService.getTravelList();
         break;
     }
-
-    return StreamProvider<QuerySnapshot>.value(
-      value: DatabaseService().posts,
-      child: Scaffold(
-        appBar: buildAppBar(userPicUrl),
-        body: PostList(),
-        bottomNavigationBar: BottomNavigationBar(
-            currentIndex: _index,
-            onTap: (index) {
-              setState(() {
-                _index = index;
-              });
-            },
-            items: [
-              buildBottomNavigationBarItem('Food', Icons.ac_unit),
-              buildBottomNavigationBarItem('Travel', Icons.ac_unit),
-            ]),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => PostList()));
+    return Scaffold(
+      appBar: buildAppBar(userPicUrl),
+      body: listFutureBuilder(future),
+      bottomNavigationBar: BottomNavigationBar(
+          currentIndex: _index,
+          onTap: (index) {
+            setState(() {
+              _index = index;
+            });
           },
-          child: Icon(Icons.add),
-        ),
+          items: [
+            buildBottomNavigationBarItem('Food', Icons.ac_unit),
+            buildBottomNavigationBarItem('Travel', Icons.ac_unit),
+          ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => PostPage()));
+        },
+        child: Icon(Icons.add),
       ),
     );
   }
@@ -71,9 +70,13 @@ class HomeView extends HomeViewModel {
 
   FlatButton buildFlatButtonLogOut() {
     return FlatButton.icon(
-      onPressed: () => signOut(),
+      onPressed: () async {
+        await _auth.signOut();
+      },
       icon: Icon(Icons.exit_to_app),
-      label: Text('Log out'),
+      label: Text(
+        'Log out',
+      ),
     );
   }
 

@@ -12,9 +12,9 @@ class _PostListState extends State<PostList> {
   Widget build(BuildContext context) {
     final posts = Provider.of<QuerySnapshot>(context);
     //print(posts.docs);
-    for (var doc in posts.docs) {
+    /* for (var doc in posts.docs) {
       print(doc.data);
-    }
+    } */
     return Container();
   }
 }

@@ -4,6 +4,7 @@ import 'package:travel_blog/core/base/service/database_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseAuth get auth => _auth;
 
   // Create a user object based on FirebaseUser
   UserModel _userFromFirebaseUser(User user) {

@@ -28,11 +28,11 @@ class DatabaseService {
     });
   }
 
-  Future updatePost(String sharedDate, List<String> sharedImgs,
-      String sharedLat, String sharedLong, String sharedText) async {
+  Future updatePost(String sharedDate, String sharedImgUrl, String sharedLat,
+      String sharedLong, String sharedText) async {
     return await postCollection.doc(uid).set({
       'sharedDate': sharedDate,
-      'sharedImgs': sharedImgs,
+      'sharedImgs': sharedImgUrl,
       'sharedLat': sharedLat,
       'sharedLong': sharedLong,
       'sharedText': sharedText
