@@ -1,12 +1,11 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -38,8 +37,8 @@ class _BodyUIState extends State<BodyUI> {
         await (await yuklemeGorevi.onComplete).ref.getDownloadURL();
 
     var url = indirmeUrl.toString();
-
-    print("indirme urlsi: " + url);
+    
+    print("indirme urlsi: "+ url);
 
     return url;
   }
@@ -180,7 +179,7 @@ class _BodyUIState extends State<BodyUI> {
                 filled: true,
                 hintStyle: new TextStyle(color: Colors.grey[800]),
                 hintText:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam vehicula ligula eu ligula placerat dapibus ut lobortis purus. Aliquam erat volutpat.",
                 fillColor: Colors.white70),
           ),
         ),
