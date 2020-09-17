@@ -1,10 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:travel_blog/core/base/model/error_model.dart';
+import 'package:travel_blog/core/base/service/database_service.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
+import 'package:travel_blog/ui/home/model/post_model.dart';
 import 'package:travel_blog/ui/home/model/product_model.dart';
+import 'package:travel_blog/ui/home/view/post_list.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/ui/maps/screen/LoadingMapCircular.dart';
 import 'package:travel_blog/ui/post_page/postpage.dart';
@@ -18,6 +23,7 @@ class HomeView extends HomeViewModel {
   Future future;
   String get userPicUrl =>
       "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; //shared pref profil img
+  String uid = FirebaseAuth.instance.currentUser.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -29,27 +35,30 @@ class HomeView extends HomeViewModel {
         future = homeService.getTravelList();
         break;
     }
-    return Scaffold(
-      appBar: buildAppBar(userPicUrl),
-      body: listFutureBuilder(future),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _index,
-          onTap: (index) {
-            setState(() {
-              _index = index;
-            });
+    return StreamProvider<List<PostModel>>.value(
+      value: DatabaseService(uid: uid).posts,
+      child: Scaffold(
+        appBar: buildAppBar(userPicUrl),
+        body: PostList(),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _index,
+            onTap: (index) {
+              setState(() {
+                _index = index;
+              });
+            },
+            items: [
+              buildBottomNavigationBarItem('Food', Icons.ac_unit),
+              buildBottomNavigationBarItem('Travel', Icons.ac_unit),
+            ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PostPage()));
           },
-          items: [
-            buildBottomNavigationBarItem('Food', Icons.ac_unit),
-            buildBottomNavigationBarItem('Travel', Icons.ac_unit),
-          ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PostPage()));
-        },
-        child: Icon(Icons.add),
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }

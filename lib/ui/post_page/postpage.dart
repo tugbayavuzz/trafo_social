@@ -1,17 +1,13 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_gallery_camera/image_picker_gallery_camera.dart';
 import 'package:path/path.dart';
-import 'package:travel_blog/core/base/model/user_model.dart';
-import 'package:travel_blog/core/base/service/database_service.dart';
-import 'package:travel_blog/ui/auth/service/auth_service.dart';
+import 'service/post_service.dart';
 
 class PostPage extends StatefulWidget {
   @override
@@ -62,14 +58,6 @@ class _BodyUIState extends State<BodyUI> {
       _img = pickedImg;
       _imgPath = basename(pickedImg.path);
     });
-  }
-
-  Future post(String sharedDate, String sharedImgUrl, String sharedLat,
-      String sharedLong, String sharedText) async {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-
-    DatabaseService(uid: uid).updatePost(
-        sharedDate, sharedImgUrl, sharedLat, sharedLong, sharedText);
   }
 
   // View
@@ -155,7 +143,8 @@ class _BodyUIState extends State<BodyUI> {
         ),
       ),
       onPressed: () {
-        post(sharedDate, postImgUrl, '70.234', '68.342', 'Selamlar');
+        PostService()
+            .post(sharedDate, postImgUrl, '70.234', '68.342', 'Selamlar');
       },
       color: Color(0xff83a4d4),
       textColor: Colors.white,

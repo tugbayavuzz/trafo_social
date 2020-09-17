@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:travel_blog/core/base/model/user_model.dart';
+import 'package:travel_blog/ui/home/model/post_model.dart';
 
 class DatabaseService {
   final String uid; // User id
@@ -18,13 +18,14 @@ class DatabaseService {
   // Updates
 
   Future updateUserData(String name, String title, String birthday,
-      String gender, String profileImgUrl) async {
+      String gender, String profileImgUrl, List<PostModel> posts) async {
     return await userCollection.doc(uid).set({
       'name': name,
       'title': title,
       'birthday': birthday,
       'gender': gender,
-      'profileImgUrl': profileImgUrl
+      'profileImgUrl': profileImgUrl,
+      'posts': posts
     });
   }
 
@@ -40,20 +41,20 @@ class DatabaseService {
   }
 
   // Get user list from snapshot
-  List<UserModel> _userListFromSnapshot(QuerySnapshot snapshot) {
+  List<PostModel> _postListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
-      return UserModel(
-              name: doc.data()['name'] ?? '',
-              title: doc.data()['title'] ?? '',
-              birthday: doc.data()['birthday'] ?? '',
-              gender: doc.data()['gender'] ?? '',
-              profileImgUrl: doc.data()['profileImgUrl']) ??
+      return PostModel(
+              sharedDate: doc.data()['sharedDate'] ?? '',
+              sharedImg: doc.data()['sharedImgs'] ?? '',
+              sharedLat: doc.data()['sharedLat'] ?? '',
+              sharedLong: doc.data()['sharedLong'] ?? '',
+              sharedText: doc.data()['sharedText']) ??
           '';
     }).toList();
   }
 
   // Get Post Stream
-  Stream<QuerySnapshot> get posts {
-    return postCollection.snapshots();
+  Stream<List<PostModel>> get posts {
+    return postCollection.snapshots().map(_postListFromSnapshot);
   }
 }

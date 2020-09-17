@@ -54,7 +54,8 @@ class AuthService {
           'Newcomer',
           '1.1.1990',
           'Unknown',
-          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png',
+          []);
 
       return _userFromFirebaseUser(user);
     } catch (e) {

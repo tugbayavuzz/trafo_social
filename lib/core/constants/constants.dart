@@ -6,16 +6,11 @@ class AppConstants {
   static AppConstants get instance => _instance;
   AppConstants._init();
 
-  static const String URL = "https://fb-wash-app.firebaseio.com";
-  static const String DISCOUNTLIST_URL = "$URL/home/discountlist.json";
-
-  ////
   static const String BASE_URL = "https://fb-travel-app.firebaseio.com";
   static const String FOOD_URL = "$BASE_URL/product/food.json";
   static const String TRAVEL_URL = "$BASE_URL/product/traveller.json";
   static const String USER_URL = "$BASE_URL/user.json";
 
-  ///
   static const Color THEME_COLOR = Color.fromRGBO(227, 250, 252, 1);
   static const String EMPTY_USER_IMG =
       'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';

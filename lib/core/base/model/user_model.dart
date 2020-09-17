@@ -1,3 +1,5 @@
+import 'package:travel_blog/ui/home/model/post_model.dart';
+
 class UserModel {
   final String uid;
   final String name;
@@ -5,6 +7,7 @@ class UserModel {
   final String birthday;
   final String gender;
   final String profileImgUrl;
+  List<PostModel> posts;
   UserModel(
       {this.uid,
       this.name,

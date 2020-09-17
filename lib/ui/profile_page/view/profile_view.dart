@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
-import 'package:travel_blog/core/base/service/database_service.dart';
-import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
 import 'package:travel_blog/ui/profile_page/model/model.dart';
