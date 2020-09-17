@@ -23,6 +23,7 @@ class _SignInState extends State<SignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text('Sign In'),
         actions: [
           FlatButton.icon(
               onPressed: () {

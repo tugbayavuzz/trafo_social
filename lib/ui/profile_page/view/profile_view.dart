@@ -4,8 +4,8 @@ import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
 class ProfileView extends ProfileViewModel {
-  @override
   String view = "food";
+  @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;

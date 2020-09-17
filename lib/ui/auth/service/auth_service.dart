@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travel_blog/core/base/model/user_model.dart';
+import 'package:travel_blog/core/base/service/database_service.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -45,6 +46,15 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;
+
+      // Create a new document for the registered user
+      await DatabaseService(uid: user.uid).updateUserData(
+          'New User',
+          'Newcomer',
+          '1.1.1990',
+          'Unknown',
+          'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png');
+
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
