@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_blog/core/base/service/database_service.dart';
+import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/profile_edit_page/view/editProfile.dart';
 import 'package:travel_blog/ui/profile_page/viewmodel/profile_viewmodel.dart';
 
@@ -9,8 +13,8 @@ class ProfileView extends ProfileViewModel {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    final String imgUrl =
-        'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+    final users = Provider.of<QuerySnapshot>(context);
+    final String imgUrl = AppConstants.EMPTY_USER_IMG;
     final String travel = 'https://gokovali.com/images/2018/06/06/azmak.jpg';
     final String travell =
         'https://media-cdn.tripadvisor.com/media/photo-s/09/51/c7/db/the-forest-camp.jpg';
@@ -24,26 +28,27 @@ class ProfileView extends ProfileViewModel {
       travell
     ];
 
-    return new Stack(
+    return Stack(
       children: <Widget>[
         buildContainer(),
         buildBackgroundImage(travel),
-        new Scaffold(
-            resizeToAvoidBottomPadding: false,
-            appBar: buildAppBar(),
-            backgroundColor: Colors.transparent,
-            body: Container(
-              child: new Column(
-                children: <Widget>[
-                  buildProfileImage(_width, _height, imgUrl),
-                  buildSizedBox(_height),
-                  buildNameSurnameText('Eric Ferkyd', _width),
-                  buildJobText('Computer Engineer', _width, _height),
-                  buildRowButtons(),
-                  buildPosts(myList),
-                ],
-              ),
-            ))
+        Scaffold(
+          resizeToAvoidBottomPadding: false,
+          appBar: buildAppBar(),
+          backgroundColor: Colors.transparent,
+          body: Container(
+            child: new Column(
+              children: <Widget>[
+                buildProfileImage(_width, _height, imgUrl),
+                buildSizedBox(_height),
+                buildNameSurnameText('Eric Ferkyd', _width),
+                buildJobText('Computer Engineer', _width, _height),
+                buildRowButtons(),
+                buildPosts(myList),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }

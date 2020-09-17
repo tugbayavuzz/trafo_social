@@ -10,6 +10,8 @@ class AppConstants {
   static const String DISCOUNTLIST_URL = "$BASE_URL/home/discountlist.json";
 
   static const Color THEME_COLOR = Color.fromRGBO(227, 250, 252, 1);
+  static const String EMPTY_USER_IMG =
+      'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 
   // Text Styles
   static final TextStyle appTextStyleTitle = GoogleFonts.montserrat(

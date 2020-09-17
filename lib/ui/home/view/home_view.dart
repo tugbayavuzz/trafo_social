@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:travel_blog/core/base/service/database_service.dart';
 import 'package:travel_blog/ui/auth/service/auth_service.dart';
 import 'package:travel_blog/ui/detail/view/detail.dart';
 import 'package:travel_blog/ui/home/model/card_model.dart';
+import 'package:travel_blog/ui/home/view/post_list.dart';
 import 'package:travel_blog/ui/home/viewmodel/home_viewmodel.dart';
 import 'package:travel_blog/core/constants/constants.dart';
 import 'package:travel_blog/ui/post_page/postpage.dart';
@@ -35,27 +39,30 @@ class HomeView extends HomeViewModel {
         card = dummyCardTravel;
         break;
     }
-    return Scaffold(
-      appBar: buildAppBar(card.userPicUrl),
-      body: buildListViewStories(card),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _index,
-          onTap: (index) {
-            setState(() {
-              _index = index;
-            });
+    return StreamProvider<QuerySnapshot>.value(
+      value: DatabaseService().posts,
+      child: Scaffold(
+        appBar: buildAppBar(card.userPicUrl),
+        body: PostList(),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _index,
+            onTap: (index) {
+              setState(() {
+                _index = index;
+              });
+            },
+            items: [
+              buildBottomNavigationBarItem('Food', Icons.ac_unit),
+              buildBottomNavigationBarItem('Travel', Icons.ac_unit),
+            ]),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => PostPage()));
           },
-          items: [
-            buildBottomNavigationBarItem('Food', Icons.ac_unit),
-            buildBottomNavigationBarItem('Travel', Icons.ac_unit),
-          ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => PostPage()));
-        },
-        child: Icon(Icons.add),
+          child: Icon(Icons.add),
+        ),
       ),
     );
   }
